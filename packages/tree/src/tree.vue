@@ -292,7 +292,7 @@
       },
 
       handleKeydown(ev) {
-        const currentItem = ev.target;
+        let currentItem = ev.target;
         if (currentItem.className.indexOf('el-tree-node') === -1) return;
         const keyCode = ev.keyCode;
         this.treeItems = this.$el.querySelectorAll('.is-focusable[role=treeitem]');
@@ -306,10 +306,13 @@
             nextIndex = (currentIndex < this.treeItemArray.length - 1) ? currentIndex + 1 : 0;
           }
           this.treeItemArray[nextIndex].focus(); // 选中
+          this.treeItemArray[nextIndex].click(); // 选中
         }
         if ([37, 39].indexOf(keyCode) > -1) { // left、right 展开
           ev.preventDefault();
-          currentItem.click(); // 选中
+          if (currentItem.querySelector('.el-tree-node__expand-icon')) {
+            currentItem.querySelector('.el-tree-node__expand-icon').click();
+          }
         }
         const hasInput = currentItem.querySelector('[type="checkbox"]');
         if ([13, 32].indexOf(keyCode) > -1 && hasInput) { // space enter选中checkbox
